@@ -11,7 +11,7 @@ type DbAmbassadors struct {
 }
 
 func (g *DbAmbassadors) ConnectDatabase() (*sql.DB, error) {
-	db, err := sql.Open("mysql", "root:root@127.0.0.1/ambassadors")
+	db, err := sql.Open("mysql", "root:root@tcp(localhost)/ambassadors")
 	if err != nil {
 		return nil, err
 	}
