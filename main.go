@@ -59,10 +59,14 @@ func main() {
 		priceClean = strings.Replace(priceClean, " ", "", -1)
 		code := html.EscapeString(e.ChildText(`#content > div > div:nth-child(1) > div.col-sm-4 > ul:nth-child(2) > li:nth-child(2) > span`))
 
+		if quantityClean == "Vyprodáno" {
+			priceClean = "0"
+		}
 		quantity, err := strconv.ParseInt(quantityClean, 10, 64)
 		if err != nil {
 			log.Error(err.Error())
 		}
+
 		price, err := strconv.ParseInt(priceClean, 10, 64)
 		if err != nil {
 			log.Error(err.Error())
