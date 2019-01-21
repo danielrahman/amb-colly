@@ -1,11 +1,11 @@
 package main
 
 import (
-	"log"
-	"strings"
+	"github.com/danielrahman/ambassadorsscraper/ambassadors"
 	"github.com/gocolly/colly"
+	log "github.com/sirupsen/logrus"
+	"strings"
 )
-
 
 // Product stores information about a coursera course
 type Product struct {
@@ -34,9 +34,9 @@ func main() {
 
 	// On every a HTML element which has name attribute call callback
 	c.OnHTML(`#content > div > div:nth-child(10) a[href]`, func(e *colly.HTMLElement) {
-		// Activate detailCollector if the link contains "coursera.org/learn"
+		// Activate detailCollector if the link contains "ambassadors.eu/skate/skateboard-desky"
 		courseURL := e.Request.AbsoluteURL(e.Attr("href"))
-		if strings.Index(courseURL, "https://www.ambassadors.eu/skate/skateboard-desky") != -1 {
+		if strings.Index(courseURL, "ambassadors.eu/skate/skateboard-desky") != -1 {
 			detailCollector.Visit(courseURL)
 		}
 	})
@@ -64,6 +64,15 @@ func main() {
 		// Iterate over rows of the table which contains different information
 		// about the product
 		products = append(products, product)
+	})
+
+	c.OnScraped(func(r *colly.Response) {
+		var db ambassadors.DbAmbassadors
+		_, err := db.ConnectDatabase()
+		if err != nil {
+			log.Error(err.Error())
+		}
+		log.Println(products)
 	})
 
 	c.Visit("https://www.ambassadors.eu/skate/skateboard-desky")

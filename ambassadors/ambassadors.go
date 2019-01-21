@@ -3,8 +3,8 @@ package ambassadors
 import (
 	"database/sql"
 	"fmt"
-	"log"
-
+	_ "github.com/go-sql-driver/mysql"
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -17,7 +17,6 @@ const (
 type DbAmbassadors struct {
 	Db *sql.DB
 }
-
 
 func (g *DbAmbassadors) ConnectDatabase() (*sql.DB, error) {
 	msqlInfo := fmt.Sprintf("host=%s user=%s "+
