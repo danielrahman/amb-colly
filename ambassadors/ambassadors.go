@@ -29,3 +29,12 @@ func (g DbAmbassadors) UpdateDatabase(sqlStatement string) {
 		panic(err)
 	}
 }
+
+func (g DbAmbassadors) GetData(sqlRow string, sqlTable string, sqlKey string, sqlValue string) *sql.Rows {
+	sqlQuery := "SELECT " + sqlRow + " FROM " + sqlTable + " WHERE " + sqlKey + " = " + sqlValue
+	rows, err := g.Db.Query(sqlQuery)
+	if err != nil {
+		panic(err)
+	}
+	return rows
+}
