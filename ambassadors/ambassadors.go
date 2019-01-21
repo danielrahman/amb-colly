@@ -30,8 +30,8 @@ func (g DbAmbassadors) UpdateDatabase(sqlStatement string) {
 	}
 }
 
-func (g DbAmbassadors) GetData(sqlRow string, sqlTable string, sqlKey string, sqlValue string) *sql.Rows {
-	sqlQuery := "SELECT " + sqlRow + " FROM " + sqlTable + " WHERE " + sqlKey + " = " + sqlValue
+func (g DbAmbassadors) GetData(sqlRow string, sqlTable string) *sql.Rows {
+	sqlQuery := "SELECT " + sqlRow + " FROM " + sqlTable
 	rows, err := g.Db.Query(sqlQuery)
 	if err != nil {
 		panic(err)
