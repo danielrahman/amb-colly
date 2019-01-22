@@ -16,6 +16,7 @@ func main() {
 	if err != nil {
 		log.Error(err.Error())
 	}
+	db.UpdateDatabase(fmt.Sprintf(`INSERT INTO log (type, status, date) VALUES ("transactions", "start", "%s")`, time.Now().Format("20060102150405")))
 
 	products := db.GetData("product_id, url", "products")
 	defer products.Close()
@@ -70,5 +71,5 @@ func main() {
 
 		c.Visit(url)
 	}
-
+	db.UpdateDatabase(fmt.Sprintf(`INSERT INTO log (type, status, date) VALUES ("transactions", "end", "%s")`, time.Now().Format("20060102150405")))
 }

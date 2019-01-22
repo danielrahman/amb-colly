@@ -9,6 +9,7 @@ import (
 	"html"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // Product stores information about a coursera course
@@ -30,6 +31,8 @@ func main() {
 	if err != nil {
 		log.Error(err.Error())
 	}
+	db.UpdateDatabase(fmt.Sprintf(`INSERT INTO log (type, status, date) VALUES ("products", "start", "%s")`, time.Now().Format("20060102150405")))
+
 	// Instantiate default collector
 	c := colly.NewCollector()
 
@@ -122,6 +125,7 @@ func main() {
 	c.Visit(`https://www.ambassadors.eu/doplnky/thrasher-magazine?limit=1000`)
 	c.Visit(`https://www.ambassadors.eu/boty/obuv?limit=1000`)
 	c.Visit(`https://www.ambassadors.eu/boty/vlozky-do-bot?limit=1000`)
+	db.UpdateDatabase(fmt.Sprintf(`INSERT INTO log (type, status, date) VALUES ("products", "end", "%s")`, time.Now().Format("20060102150405")))
 }
 
 func getCategory(productUrl string) string {
