@@ -51,15 +51,13 @@ func main() {
 			adjustment := quantityNew - sum
 			quantityActual := sum + adjustment
 
-			println(productId)
-			println(sum, "/", quantityNew)
 			if sum == quantityNew {
 				return
 			} else {
 
-				println("product_id: ", productId)
-				println("Adjustment (quantityNew - sum): ", adjustment)
-				println("quantityActual (sum + adjustment): ", quantityActual)
+				log.Println("product_id: ", productId)
+				log.Println("Adjustment (quantityNew - sum): ", adjustment)
+				log.Println("quantityActual (sum + adjustment): ", quantityActual)
 
 				db.UpdateDatabase(fmt.Sprintf(`INSERT INTO products (product_id, quantity) VALUES ("%s", "%d") ON DUPLICATE KEY UPDATE product_id=VALUES(product_id), Quantity=VALUES(Quantity) `, productId, quantityActual))
 
