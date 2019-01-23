@@ -53,7 +53,8 @@ func main() {
 	// Extract details from products
 	detailCollector.OnHTML(`.content-box`, func(e *colly.HTMLElement) {
 
-		title := html.EscapeString(e.ChildText(`h1`))
+		title := strings.Replace(e.ChildText(`h1`), "'", "", -1)
+		title = strings.Replace(e.ChildText(`h1`), "\"", "", -1)
 		log.Println(`Product:`, title)
 		vendor := html.EscapeString(e.ChildText(`#content > div > div:nth-child(1) > div.col-sm-4 > ul:nth-child(2) > li:nth-child(1) > a`))
 		quantityDirty := e.ChildText(`#content > div > div:nth-child(1) > div.col-sm-4 > ul:nth-child(2) > li:nth-child(4) > span`)
