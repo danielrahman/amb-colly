@@ -39,11 +39,6 @@ func main() {
 	// Create another collector to scrape course details
 	detailCollector := c.Clone()
 
-	// Before making a request print `Visiting ...`
-	c.OnRequest(func(r *colly.Request) {
-		log.Println(`visiting`, r.URL.String())
-	})
-
 	// On every a HTML element which has name attribute call callback
 	c.OnHTML(`#content > div > div .caption a[href]`, func(e *colly.HTMLElement) {
 		courseURL := e.Request.AbsoluteURL(e.Attr(`href`))
@@ -55,7 +50,6 @@ func main() {
 
 		title := strings.Replace(e.ChildText(`h1`), "'", "", -1)
 		title = strings.Replace(e.ChildText(`h1`), "\"", "", -1)
-		log.Println(`Product:`, title)
 		vendor := html.EscapeString(e.ChildText(`#content > div > div:nth-child(1) > div.col-sm-4 > ul:nth-child(2) > li:nth-child(1) > a`))
 		quantityDirty := e.ChildText(`#content > div > div:nth-child(1) > div.col-sm-4 > ul:nth-child(2) > li:nth-child(4) > span`)
 		quantityClean := strings.Replace(quantityDirty, " ks", "", -1)

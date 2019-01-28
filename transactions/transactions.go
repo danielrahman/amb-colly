@@ -31,12 +31,14 @@ func main() {
 		c.OnHTML(".content-box", func(e *colly.HTMLElement) {
 			quantityDirty := e.ChildText(`#content > div > div:nth-child(1) > div.col-sm-4 > ul:nth-child(2) > li:nth-child(4) > span`)
 			quantityClean := strings.Replace(quantityDirty, " ks", "", -1)
-			if quantityClean == "Vyprodáno" || quantityClean == "" {
+			if quantityClean == "Vyprodáno" || quantityClean == "Skladem" || quantityClean == "Není skladem" || quantityClean == "" {
 				quantityClean = "0"
 			}
 			quantityNew, err := strconv.Atoi(quantityClean)
 			if err != nil {
 				log.Error(err.Error())
+				log.Info(productId)
+				log.Info(url)
 			}
 
 			transactions := db.GetData("adjustment", "transactions WHERE product_id = "+productId)
@@ -55,10 +57,7 @@ func main() {
 			if sum == quantityNew {
 				return
 			} else {
-
-				log.Println("product_id: ", productId)
-				log.Println("Adjustment (quantityNew - sum): ", adjustment)
-				log.Println("quantityActual (sum + adjustment): ", quantityActual)
+				log.Println(productId, "/", adjustment)
 
 				db.UpdateDatabase(fmt.Sprintf(`INSERT INTO products (product_id, quantity) VALUES ("%s", "%d") ON DUPLICATE KEY UPDATE product_id=VALUES(product_id), Quantity=VALUES(Quantity) `, productId, quantityActual))
 
