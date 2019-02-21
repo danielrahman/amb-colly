@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/danielrahman/ambassadorsscraper/ambassadors"
+	"github.com/danielrahman/amb-colly/ambassadors"
 	"github.com/gocolly/colly"
 	log "github.com/sirupsen/logrus"
 	"strconv"

@@ -1,6 +1,6 @@
 package: .
 import:
-- package: github.com/danielrahman/ambassadorsscraper
+- package: github.com/danielrahman/amb-colly
   subpackages:
   - ambassadors
 - package: github.com/go-sql-driver/mysql
