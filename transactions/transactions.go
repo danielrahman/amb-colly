@@ -59,9 +59,9 @@ func main() {
 			} else {
 				log.Println(productId, "/", adjustment)
 
-				db.UpdateDatabase(fmt.Sprintf(`INSERT INTO products (product_id, quantity) VALUES ("%s", "%d") ON DUPLICATE KEY UPDATE product_id=VALUES(product_id), Quantity=VALUES(Quantity) `, productId, quantityActual))
+				db.UpdateDatabase(fmt.Sprintf(`INSERT INTO products (product_id, quantity) VALUES ("%s", "%d") ON DUPLICATE KEY UPDATE product_id=VALUES(product_id), Quantity=VALUES(quantity) `, productId, quantityActual))
 
-				db.UpdateDatabase(fmt.Sprintf(`INSERT INTO transactions (product_id, date, Adjustment, Quantity)
+				db.UpdateDatabase(fmt.Sprintf(`INSERT INTO transactions (product_id, date, adjustment, quantity)
 			VALUES ("%s", "%s","%d", "%d" )`,
 					productId, time.Now().Format("20060102150405"), adjustment, quantityActual))
 			}
