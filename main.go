@@ -89,6 +89,7 @@ func main() {
 			VALUES ("%d", "%s", "%s", "%s","%d", "%d","%s", "%s" )
 			ON DUPLICATE KEY UPDATE product_id=VALUES(product_id), Title=VALUES(Title), Category=VALUES(Category), Vendor=VALUES(Vendor), Quantity=VALUES(Quantity), Price=VALUES(Price), Code=VALUES(Code), Url=VALUES(Url)`,
 			product.Id, product.Title, product.Category, product.Vendor, product.Quantity, product.Price, product.Code, product.URL))
+		log.Println(product.Title, "/", product.Quantity)
 	})
 
 	c.Visit(`https://www.ambassadors.eu/skate/skateboard-desky?limit=1000`)
