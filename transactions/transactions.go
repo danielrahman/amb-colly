@@ -18,13 +18,14 @@ func main() {
 	}
 	db.UpdateDatabase(fmt.Sprintf(`INSERT INTO log (type, status, date) VALUES ("transactions", "start", "%s")`, time.Now().Format("20060102150405")))
 
-	products := db.GetData("product_id, url", "products")
+	products := db.GetData("product_id, url, quantity", "products")
 	defer products.Close()
 	for products.Next() {
 		c := colly.NewCollector()
 		var productId string
 		var url string
-		if err := products.Scan(&productId, &url); err != nil {
+		var quantity int
+		if err := products.Scan(&productId, &url, &quantity); err != nil {
 			log.Fatal(err)
 		}
 
@@ -41,20 +42,10 @@ func main() {
 				log.Info(url)
 			}
 
-			transactions := db.GetData("adjustment", "transactions WHERE product_id = "+productId)
-			sum := 0
-			for transactions.Next() {
-				var adjustment int
-				if err := transactions.Scan(&adjustment); err != nil {
-					log.Fatal(err)
-				}
-				sum += adjustment
-			}
+			adjustment := quantityNew - quantity
+			quantityActual := quantity + adjustment
 
-			adjustment := quantityNew - sum
-			quantityActual := sum + adjustment
-
-			if sum == quantityNew {
+			if quantity == quantityNew {
 				return
 			} else {
 				log.Println(productId, "/", adjustment)
