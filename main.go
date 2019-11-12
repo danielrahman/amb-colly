@@ -61,7 +61,7 @@ func main() {
 		productUrl := e.Request.URL.String()
 		category := getCategory(productUrl)
 
-		if quantityClean == "Vyprodáno" || quantityClean == "" {
+		if quantityClean == "Vyprodáno" || quantityClean == "Skladem" || quantityClean == "Není skladem" || quantityClean == "" {
 			quantityClean = "0"
 		}
 		quantity, err := strconv.ParseInt(quantityClean, 10, 64)
